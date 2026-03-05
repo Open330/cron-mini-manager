@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cron Mini Manager
 
-## Getting Started
+Web-based cron manager for this Mac mini, built with Next.js 16 and React 19.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Next.js 16 (`next@16.1.6`)
+- React 19 (`react@19.2.4`)
+- Node.js 24+
+- TypeScript + App Router
+
+## Features
+
+- View all cron jobs managed by this app
+- Create cron jobs with name/schedule/command
+- Edit existing jobs
+- Enable/disable jobs without deleting
+- Delete jobs
+- Keeps non-managed crontab lines untouched
+
+## How it works
+
+This app manages a dedicated block in your user crontab:
+
+```txt
+# BEGIN CRON_MINI_MANAGER
+# JOB {"id":"...","name":"...","enabled":true,...}
+0 0 * * * /path/to/command
+# END CRON_MINI_MANAGER
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Only lines inside that block are read/written by the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js 24+
+- macOS with `crontab` available
 
-## Learn More
+## Development
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open http://localhost:3000.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Validation
 
-## Deploy on Vercel
+```bash
+npm run lint
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Security notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Commands run by cron execute with your local user privileges.
+- Keep this app local/private unless you add authentication and access controls.
