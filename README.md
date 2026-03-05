@@ -14,10 +14,18 @@
   <img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white" alt="TypeScript 5" />
   <img src="https://img.shields.io/badge/Node.js-%E2%89%A524-5FA04E?logo=node.js&logoColor=white" alt="Node.js 24+" />
   <img src="https://img.shields.io/badge/platform-macOS-cron-lightgrey" alt="macOS cron" />
+  <img src="https://img.shields.io/badge/license-MIT-22c55e" alt="MIT license" />
 </p>
 
 <p align="center">
   Cron Mini Manager reads your local crontab, keeps unmanaged lines intact, and only mutates jobs inside a dedicated managed block.
+</p>
+
+<p align="center">
+  <a href="#installation">Installation</a> ·
+  <a href="#setup">Setup</a> ·
+  <a href="#validation">Validation</a> ·
+  <a href="#license">License</a>
 </p>
 
 ---
@@ -71,16 +79,52 @@ cron-mini-manager/
 └── src/lib/cron-jobs.ts           # Crontab parsing + persistence logic
 ```
 
-## Quick Start
+## Installation
+
+### Prerequisites
+
+- macOS with `crontab` available in your shell.
+- Node.js 24+ (matches `package.json` engines).
+- npm 10+.
+
+### Install Locally
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Open330/cron-mini-manager.git
 cd cron-mini-manager
 npm install
+```
+
+## Setup
+
+### 1) Start the App
+
+```bash
 npm run dev
 ```
 
 Open http://localhost:3000.
+
+### 2) Create Your First Managed Job
+
+- Fill in `Name`, `Schedule`, and `Command`.
+- Submit the form from the dashboard.
+- Use the `Enable/Disable` action to toggle without deleting.
+
+### 3) Confirm Managed Block in Crontab
+
+```bash
+crontab -l
+```
+
+You should see this app-managed section (plus your untouched external lines):
+
+```txt
+# BEGIN CRON_MINI_MANAGER
+# JOB {"id":"...","name":"...","enabled":true,...}
+0 0 * * * /path/to/command
+# END CRON_MINI_MANAGER
+```
 
 ## Validation
 
@@ -94,6 +138,10 @@ npm run build
 - Cron commands run with your local user privileges.
 - This project has no authentication layer by default.
 - Keep it on a trusted local/private network unless you add auth.
+
+## License
+
+MIT - see `LICENSE`.
 
 ---
 
