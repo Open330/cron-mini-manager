@@ -1,8 +1,23 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 :root {
   --background: #f5f8ff;
   --foreground: #0f1b2d;
+  --backdrop-a: #d8e5ff;
+  --backdrop-b: #ffe4bf;
+  --backdrop-c: #f8fbff;
+  --backdrop-d: #eef4ff;
+}
+
+:root[data-theme="dark"] {
+  --background: #090d16;
+  --foreground: #e5edff;
+  --backdrop-a: #1b2a47;
+  --backdrop-b: #3a2a1f;
+  --backdrop-c: #0f1629;
+  --backdrop-d: #090d16;
 }
 
 @theme inline {
@@ -14,11 +29,16 @@
 
 body {
   min-height: 100vh;
+  color-scheme: light;
   background: var(--background);
   background-image:
-    radial-gradient(circle at 15% 15%, #d8e5ff 0, transparent 38%),
-    radial-gradient(circle at 90% 0%, #ffe4bf 0, transparent 33%),
-    linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+    radial-gradient(circle at 15% 15%, var(--backdrop-a) 0, transparent 38%),
+    radial-gradient(circle at 90% 0%, var(--backdrop-b) 0, transparent 33%),
+    linear-gradient(180deg, var(--backdrop-c) 0%, var(--backdrop-d) 100%);
   color: var(--foreground);
   font-family: var(--font-geist-sans), "Segoe UI", sans-serif;
+}
+
+:root[data-theme="dark"] body {
+  color-scheme: dark;
 }

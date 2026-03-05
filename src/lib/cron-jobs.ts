@@ -29,6 +29,7 @@ export type CronJob = {
   enabled: boolean;
   createdAt: string;
   updatedAt: string;
+  managed: boolean;
 };
 
 export type CronJobInput = {
@@ -238,10 +239,46 @@ function parseManagedBlock(raw: string): ManagedBlock {
         typeof metadata.updatedAt === "string" && metadata.updatedAt
           ? metadata.updatedAt
           : now,
+      managed: true,
     });
   }
 
   return { before, after, jobs };
+}
+
+function parseExternalJobs(lines: string[], scope: "before" | "after"): CronJob[] {
+  const now = new Date().toISOString();
+  const jobs: CronJob[] = [];
+
+  lines.forEach((line, index) => {
+    const trimmed = line.trim();
+    if (!trimmed) {
+      return;
+    }
+
+    const disabledLine = trimmed.startsWith("#");
+    const executable = disabledLine
+      ? normalizeWhitespace(trimmed.replace(/^#\s?/, ""))
+      : normalizeWhitespace(trimmed);
+
+    const parsed = parseScheduleAndCommand(executable);
+    if (!parsed) {
+      return;
+    }
+
+    jobs.push({
+      id: `external-${scope}-${index}`,
+      name: `External Job ${jobs.length + 1}`,
+      schedule: parsed.schedule,
+      command: parsed.command,
+      enabled: !disabledLine,
+      createdAt: now,
+      updatedAt: now,
+      managed: false,
+    });
+  });
+
+  return jobs;
 }
 
 function renderManagedBlock(jobs: CronJob[]): string[] {
@@ -299,7 +336,13 @@ async function saveJobs(block: ManagedBlock, jobs: CronJob[]): Promise<void> {
 export async function listCronJobs(): Promise<CronJob[]> {
   const raw = await readCrontabRaw();
   const block = parseManagedBlock(raw);
-  return block.jobs.sort((a, b) => a.name.localeCompare(b.name));
+  const managedJobs = [...block.jobs].sort((a, b) => a.name.localeCompare(b.name));
+  const unmanagedJobs = [
+    ...parseExternalJobs(block.before, "before"),
+    ...parseExternalJobs(block.after, "after"),
+  ];
+
+  return [...managedJobs, ...unmanagedJobs];
 }
 
 export async function createCronJob(input: CronJobInput): Promise<CronJob> {
@@ -315,6 +358,7 @@ export async function createCronJob(input: CronJobInput): Promise<CronJob> {
     enabled: input.enabled,
     createdAt: now,
     updatedAt: now,
+    managed: true,
   };
 
   await saveJobs(block, [...block.jobs, job]);
