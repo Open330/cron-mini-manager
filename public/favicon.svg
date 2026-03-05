@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Cron Mini Manager Icon</title>
+  <desc id="desc">A rounded blue square with a white clock and green check mark.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#145edc" />
+      <stop offset="100%" stop-color="#2ba4fd" />
+    </linearGradient>
+  </defs>
+
+  <rect x="2" y="2" width="60" height="60" rx="13" fill="url(#bg)" />
+
+  <circle cx="31.5" cy="31.5" r="15" fill="none" stroke="#f5faff" stroke-width="4" />
+  <circle cx="31.5" cy="31.5" r="2.5" fill="#f5faff" />
+  <path
+    d="M31.5 31.5V20M31.5 31.5L40.5 35.5"
+    fill="none"
+    stroke="#f5faff"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <circle cx="46" cy="46" r="8.5" fill="#0eb57b" />
+  <path
+    d="M41.2 46 44.5 49.3 50.8 42.9"
+    fill="none"
+    stroke="#fafffc"
+    stroke-width="2.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

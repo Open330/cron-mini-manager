@@ -36,6 +36,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Cron Mini Manager",
   description: "Web-based cron job manager for this Mac mini",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
