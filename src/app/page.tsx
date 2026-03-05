@@ -52,6 +52,13 @@ function resolveThemePreference(): Theme {
     : "light";
 }
 
+function applyTheme(theme: Theme) {
+  const root = document.documentElement;
+  root.dataset.theme = theme;
+  root.classList.toggle("dark", theme === "dark");
+  root.style.colorScheme = theme;
+}
+
 async function apiRequest<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     ...init,
@@ -103,13 +110,13 @@ export default function Home() {
 
   useEffect(() => {
     const nextTheme = resolveThemePreference();
-    document.documentElement.dataset.theme = nextTheme;
+    applyTheme(nextTheme);
     setTheme(nextTheme);
   }, []);
 
   function handleThemeToggle() {
     const nextTheme = theme === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = nextTheme;
+    applyTheme(nextTheme);
 
     try {
       window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);

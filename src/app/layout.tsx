@@ -19,6 +19,7 @@ const setInitialThemeScript = `(() => {
   }
 
   root.dataset.theme = resolvedTheme;
+  root.classList.toggle("dark", resolvedTheme === "dark");
   root.style.colorScheme = resolvedTheme;
 })();`;
 
